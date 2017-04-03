@@ -1,22 +1,34 @@
 
 # install packages
 install.packages("streamR")
-devtools::install_github("bnosac/taskscheduleR")
 install.packages("sp")
 install.packages("maps")
 install.packages("maptools")
 install.packages("RJSONIO")
 install.packages("jsonlite", repos="http://cran.r-project.org")
+install.packages("sp")
+install.packages("maptools")
+install.packages("maps")
+install.packages("ggplot2")
+devtools::install_github("bnosac/taskscheduleR")
+devtools::install_github("timjurka/sentiment")
 
 
 # load libraries
-library(taskscheduleR)
 library(streamR)
 library(sp)
 library(maps)
 library(maptools)
 library(RJSONIO)
 library(jsonlite)
+library(sp)
+library(maptools)
+library(maps)
+library(ggplot2)
+library(taskscheduleR)
+library(sentiment)
+
+
 
 # load my functions
 source("functions.R")
@@ -54,7 +66,17 @@ rm(coords)
 # FCC's block conversion API. Reliable but slow.
 test.data$fips2 = by(test.data, 1:nrow(test.data), function(x) latlong2fips(x$lat,x$lon))
 
-# Do sentiment analysis
+# Pre-process the tweets
+test.data = clean.tweets(test.data, "text")
+
+# Do sentiment analysis using Tim Jurka's "sentiment" package
+emotions = as.data.frame(classify_emotion(test.data$text, algorithm = "bayes"))
+polarity = as.data.frame(classify_polarity(test.data$text, algorithm = "bayes"))
+
+# Do sentiment analysis by training a text classifier 
+
+# Do some data viz
+map.tweets(tweets.df, "place_lat", "place_lon") ## maps tweets across the U.S. (still throws some errors)
 
 # Average the scores by fips code
 
