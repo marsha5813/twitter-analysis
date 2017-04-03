@@ -1,7 +1,7 @@
 
 ##################################################
 ##################################################
-# clean.locationdata
+# clean.location.data
 ##################################################
 ##################################################
 
@@ -199,17 +199,6 @@ map.tweets = function(data, lat, lon) {
   
 }
 
-
-map.data <- map_data("state")
-points <- data.frame(x = as.numeric(tweets$place_lon), y = as.numeric(tweets$place_lat))
-points <- points[points$y > 25, ]
-ggplot(map.data) + geom_map(aes(map_id = region), map = map.data, fill = "white", 
-                            color = "grey20", size = 0.25) + expand_limits(x = map.data$place_lon, y = map.data$place_lat) + 
-  theme(axis.line = element_blank(), axis.text = element_blank(), axis.ticks = element_blank(), 
-        axis.title = element_blank(), panel.background = element_blank(), panel.border = element_blank(), 
-        panel.grid.major = element_blank(), plot.background = element_blank(), 
-        plot.margin = unit(0 * c(-1.5, -1.5, -1.5, -1.5), "lines")) + geom_point(data = points, 
-                                                                                 aes(x = x, y = y), size = 1, alpha = 1/5, color = "darkblue")
 
 
 
